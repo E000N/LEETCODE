@@ -111,10 +111,10 @@ int main()
     p->next = NULL;
 
     ans = SumList(head1, &i);
-    printf("num1 %d", ans);
+    printf("num1 %d\n", ans);
 
     ans = SumList(head2, &i);
-    printf("num2 %d", ans);
+    printf("num2 %d\n", ans);
 
     ans = 0;
 
