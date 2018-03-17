@@ -13,9 +13,9 @@ struct ListNode {
 *     struct ListNode *next;
 * };
 */
-int SumList(struct ListNode* l1, int *len)
+long long int SumList(struct ListNode* l1, int *len)
 {
-	int ans = 0;
+	long long int ans = 0;
 
 	if (l1->next != NULL)
 	{
@@ -31,9 +31,9 @@ int SumList(struct ListNode* l1, int *len)
 
 struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
 
-	int sum = 0;
-	int num1 = 0;
-	int num2 = 0;
+	long long int sum = 0;
+	long long int num1 = 0;
+	long long int num2 = 0;
 	int len = 0;
 	int i = 0;
 
@@ -69,20 +69,21 @@ struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
 		return head;
 	}
 
-	i = 0;
+	len = 0;
 	while (sum != 0)
 	{
-		pn[i] = sum % 10;
+		pn[len] = sum % 10;
 		sum = sum / 10;
-		i++;
+		len++;
 	}
 
 	p = head;
-	while ((i - 1) >= 0)
+	i = 0;
+	while (i < len)
 	{
-		p->val = pn[i - 1];
-		i--;
-		if ((i - 1) == 0)
+		p->val = pn[i];
+		i++;
+		if (i >= len)
 		{
 			p->next = NULL;
 			break;
@@ -135,7 +136,7 @@ int main()
 	while (p->next != NULL)
 	{
 		p = p->next;
-		ans = ans + p->val;
+		ans = ans * 10 + p->val;
 	}
 
 	printf("ans:%d", ans);
