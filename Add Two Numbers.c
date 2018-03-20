@@ -6,82 +6,126 @@ struct ListNode {
     struct ListNode *next;
 };
 
-int SumList(struct ListNode* l1, int *len)
+struct ListNode* SumList(struct ListNode* l1, struct ListNode* l2, int up, int empty)
 {
-    int ans;
-
-    if ( l1->next != NULL )
-    {
-        ans = SumList(l1->next, len);
-    }
-
-    ans = ans * 10 + l1->val;
-
-    (*len)++;
-
-    return ans;
-};
-
-struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
-
-    int sum = 0;
-    int num1 = 0;
-    int num2 = 0;
-    int len = 0;
-    int i = 0;
-
-    int *pn;
-
-    struct ListNode *p, *pl, *head;
+    int upn = 0, num1 = 0, num2 = 0;
+    struct ListNode *head;
 
     head = (struct ListNode*) malloc(sizeof(struct ListNode));
 
-    num1 = SumList(l1, &i);
-
-    len = i;
-    i = 0;
-
-    num2 = SumList(l2, &i);
-
-    if ( len < i )
+    if ( 1 == empty )
     {
-        len = i;
+        num1 = 0;
+        num2 = l2->val;
+        head->val = (num2 + up) % 10;
+        if ((num2 + up) > 9)
+        {
+            upn = (l2->val + up) / 10;
+        }
+        if (l2->next == NULL)
+        {
+            if ( upn > 0 )
+            {
+                head->next = SumList(l1, l2, upn, 3);
+                return head;
+            }
+            head->next = NULL;
+            return head;
+        }
+
+        head->next = SumList(l1, l2->next, upn, 1);
+
+        return head;
     }
 
-    len = len + 1;
-
-    printf("num1 %d num2 %d\n", num1, num2);
-
-    sum = num1 + num2;
-    pn = (int*) malloc(sizeof(int)*len);
-
-    if ( sum == 0 )
+    if ( 2 == empty )
     {
-        head->val = 0;
+        num1 = l1->val;
+        num2 = 0;
+        head->val = (num1 + up) % 10;
+        if ((num1 + up) > 9)
+        {
+            upn = (num1 + up) / 10;
+        }
+        if (l1->next == NULL)
+        {
+            if ( upn > 0 )
+            {
+                head->next = SumList(l1, l2, upn, 3);
+                return head;
+            }
+            head->next = NULL;
+            return head;
+        }
+
+        head->next = SumList(l1->next, l2, upn, 2);
+
+        return head;
+    }
+
+    if ( 0 == empty )
+    {
+        num1 = l1->val;
+        num2 = l2->val;
+        head->val = (num1 + num2 + up) % 10;
+        if ((num1 + num2 + up) > 9)
+        {
+            upn = (num1 + num2 + up) / 10;
+        }
+
+        if ( l1->next == NULL )
+        {
+            if ( l2->next == NULL )
+            {
+                if ( upn > 0 )
+                {
+                    head->next = SumList(l1, l2, upn, 3);
+                    return head;
+                }
+                head->next = NULL;
+                return head;
+            }
+            else
+            {
+                head->next = SumList(l1, l2->next, upn, 1);
+                return head;
+            }
+        }
+        else
+        {
+            if ( l2->next == NULL )
+            {
+                head->next = SumList(l1->next, l2, upn, 2);
+                return head;
+            }
+            else
+            {
+                head->next = SumList(l1->next, l2->next, upn, 0);
+                return head;
+            }
+        }
+
+    }
+
+    if ( 3 == empty )
+    {
+        head->val = up;
         head->next = NULL;
         return head;
     }
 
-    i = 0;
-    while((sum%10) != 0)
-    {
-        pn[i] = sum % 10;
-        sum = sum / 10;
-        i++;
-    }
-
-    p = head;
-    while(i>=0)
-    {
-        p->val = pn[i];
-        i--;
-        pl = (struct ListNode*) malloc(sizeof(struct ListNode));
-        p->next = pl;
-        p = pl;
-    }
-    pl->next = NULL;
     return head;
+
 }
+
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2)
+{
+    struct ListNode *head;
+
+    head = SumList(l1, l2, 0, 0);
+
+    return head;
+};
 
 int main()
 {
@@ -109,12 +153,6 @@ int main()
     l2->next = p;
     p->val = 4;
     p->next = NULL;
-
-    ans = SumList(head1, &i);
-    printf("num1 %d\n", ans);
-
-    ans = SumList(head2, &i);
-    printf("num2 %d\n", ans);
 
     ans = 0;
 
