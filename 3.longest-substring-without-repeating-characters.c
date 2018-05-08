@@ -1,39 +1,47 @@
-struct ListNode{
-	char val;
-	struct ListNode *next;
-}
 int lengthOfLongestSubstring(char* s) {
 	int i,j,k = 0;
-	int pos = 0;
+	int len_i, len = 0;
 	int flag = 0;
-	int head = 0;
-	int count = 0;
-	int max = 0;
-	int len = 0;
-
-	while( 0 != s[i] )
+	len = 1;
+	while ( s[i] != 0 )
 	{
-		pos = i;
+		printf("while 1\n");
 		j = i;
 		k = i;
-		while ( s[j+1] != 0 && s[j+1] != s[j] )
-		{	
-			flag = 0;
-			k = i;
-			while ( k < j+1 )
+		len_i = 0;
+		flag = 0;
+		if ( 0 == s[i+1] )
+		{
+			break;
+		}
+		while ( 0 == flag )
+		{
+			printf("while 2\n");
+			if ( 0 == s[j+1] )
 			{
-				if ( s[k] == s[j+1] )
+				flag = 1;
+				break;
+			}
+			for(k=i;k<=j;k++)
+			{
+				if ( s[j+1] == s[k] )
 				{
 					flag = 1;
 					break;
 				}
-				if ( 1 == flag )
-				{
-					break;
-				}
-				k++;
+			}
+			j++;
+		}
+		if ( 1 == flag )
+		{
+			len_i = j - i + 1;
+			if  ( len_i > len )
+			{
+				len = len_i;
 			}
 		}
-		if ( 
-	} 
+		i = j;
+		i++;
+	}
+	return len; 
 }
